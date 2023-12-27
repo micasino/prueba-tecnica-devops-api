@@ -1,0 +1,583 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "description": "login users",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "login users",
+                "operationId": "login",
+                "parameters": [
+                    {
+                        "description": "Credencial Data",
+                        "name": "CredencialInput",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.Credentials"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Tokens"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/refresh-token": {
+            "post": {
+                "description": "refresh-token users",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "refresh-token users",
+                "operationId": "refresh-token",
+                "parameters": [
+                    {
+                        "description": "Token Data",
+                        "name": "TokenInput",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.Tokens"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Tokens"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/signUp": {
+            "post": {
+                "description": "SignUp users",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "SignUp users",
+                "operationId": "SignUp",
+                "parameters": [
+                    {
+                        "description": "User Data",
+                        "name": "UserInput",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseUser"
+                        }
+                    }
+                }
+            }
+        },
+        "/devops": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get all devops",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "devops"
+                ],
+                "summary": "Get all devops",
+                "operationId": "FindAll",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/handler.ResponseDevops"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/devops/save": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "devops"
+                ],
+                "parameters": [
+                    {
+                        "description": "Devops Data",
+                        "name": "devopsInput",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.Devops"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseDevops"
+                        }
+                    }
+                }
+            }
+        },
+        "/devops/update/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "devops"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": " ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Devops Data",
+                        "name": "devopsInput",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.Devops"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResponseDevops"
+                        }
+                    }
+                }
+            }
+        },
+        "/devops/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "devops"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": " ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "devops"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": " ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Devops is deleted successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/rol": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get all rol",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "rol"
+                ],
+                "summary": "Get all rol",
+                "operationId": "FindAllRol",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/handler.ResponseRol"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get all users",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get all users",
+                "operationId": "FindAllUsers",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/handler.ResponseUser"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "domain.Credentials": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.Devops": {
+            "type": "object",
+            "properties": {
+                "date_create": {
+                    "type": "string"
+                },
+                "date_deleted": {
+                    "type": "string"
+                },
+                "from": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "timeToLifeSec": {
+                    "type": "integer"
+                },
+                "to": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.Rol": {
+            "type": "object",
+            "properties": {
+                "rol_descripcion": {
+                    "type": "string"
+                },
+                "rol_eliminado": {
+                    "type": "boolean"
+                },
+                "rol_esactivo": {
+                    "type": "boolean"
+                },
+                "rol_fecharegistro": {
+                    "type": "string"
+                },
+                "rol_id": {
+                    "type": "integer"
+                },
+                "rol_nombre": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.Token": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "expires_in": {
+                    "type": "integer"
+                },
+                "refresh_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.Tokens": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "$ref": "#/definitions/domain.Token"
+                }
+            }
+        },
+        "domain.User": {
+            "type": "object",
+            "properties": {
+                "us_apellido": {
+                    "type": "string"
+                },
+                "us_clave": {
+                    "type": "string"
+                },
+                "us_correo": {
+                    "type": "string"
+                },
+                "us_eliminado": {
+                    "type": "boolean"
+                },
+                "us_esactivo": {
+                    "type": "boolean"
+                },
+                "us_fecharegistro": {
+                    "type": "string"
+                },
+                "us_id": {
+                    "type": "integer"
+                },
+                "us_nombre": {
+                    "type": "string"
+                },
+                "us_roles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Rol"
+                    }
+                },
+                "us_usuario": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ResponseDevops": {
+            "type": "object",
+            "properties": {
+                "date_create": {
+                    "type": "string"
+                },
+                "date_deleted": {
+                    "type": "string"
+                },
+                "from": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "timeToLifeSec": {
+                    "type": "integer"
+                },
+                "to": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ResponseRol": {
+            "type": "object",
+            "properties": {
+                "rol_descripcion": {
+                    "type": "string"
+                },
+                "rol_eliminado": {
+                    "type": "boolean"
+                },
+                "rol_esactivo": {
+                    "type": "boolean"
+                },
+                "rol_fecharegistro": {
+                    "type": "string"
+                },
+                "rol_id": {
+                    "type": "integer"
+                },
+                "rol_nombre": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.ResponseUser": {
+            "type": "object",
+            "properties": {
+                "us_apellido": {
+                    "type": "string"
+                },
+                "us_correo": {
+                    "type": "string"
+                },
+                "us_eliminado": {
+                    "type": "boolean"
+                },
+                "us_esactivo": {
+                    "type": "boolean"
+                },
+                "us_fecharegistro": {
+                    "type": "string"
+                },
+                "us_id": {
+                    "type": "integer"
+                },
+                "us_nombre": {
+                    "type": "string"
+                },
+                "us_usuario": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

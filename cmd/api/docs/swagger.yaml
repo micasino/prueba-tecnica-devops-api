@@ -1,0 +1,374 @@
+definitions:
+  domain.Credentials:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  domain.Devops:
+    properties:
+      date_create:
+        type: string
+      date_deleted:
+        type: string
+      from:
+        type: string
+      id:
+        type: integer
+      message:
+        type: string
+      timeToLifeSec:
+        type: integer
+      to:
+        type: string
+    type: object
+  domain.Rol:
+    properties:
+      rol_descripcion:
+        type: string
+      rol_eliminado:
+        type: boolean
+      rol_esactivo:
+        type: boolean
+      rol_fecharegistro:
+        type: string
+      rol_id:
+        type: integer
+      rol_nombre:
+        type: string
+    type: object
+  domain.Token:
+    properties:
+      access_token:
+        type: string
+      expires_in:
+        type: integer
+      refresh_token:
+        type: string
+    type: object
+  domain.Tokens:
+    properties:
+      token:
+        $ref: '#/definitions/domain.Token'
+    type: object
+  domain.User:
+    properties:
+      us_apellido:
+        type: string
+      us_clave:
+        type: string
+      us_correo:
+        type: string
+      us_eliminado:
+        type: boolean
+      us_esactivo:
+        type: boolean
+      us_fecharegistro:
+        type: string
+      us_id:
+        type: integer
+      us_nombre:
+        type: string
+      us_roles:
+        items:
+          $ref: '#/definitions/domain.Rol'
+        type: array
+      us_usuario:
+        type: string
+    type: object
+  handler.ResponseDevops:
+    properties:
+      date_create:
+        type: string
+      date_deleted:
+        type: string
+      from:
+        type: string
+      id:
+        type: integer
+      message:
+        type: string
+      timeToLifeSec:
+        type: integer
+      to:
+        type: string
+    type: object
+  handler.ResponseRol:
+    properties:
+      rol_descripcion:
+        type: string
+      rol_eliminado:
+        type: boolean
+      rol_esactivo:
+        type: boolean
+      rol_fecharegistro:
+        type: string
+      rol_id:
+        type: integer
+      rol_nombre:
+        type: string
+    type: object
+  handler.ResponseUser:
+    properties:
+      us_apellido:
+        type: string
+      us_correo:
+        type: string
+      us_eliminado:
+        type: boolean
+      us_esactivo:
+        type: boolean
+      us_fecharegistro:
+        type: string
+      us_id:
+        type: integer
+      us_nombre:
+        type: string
+      us_usuario:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /auth/login:
+    post:
+      description: login users
+      operationId: login
+      parameters:
+      - description: Credencial Data
+        in: body
+        name: CredencialInput
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Credentials'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Tokens'
+      summary: login users
+      tags:
+      - auth
+  /auth/refresh-token:
+    post:
+      description: refresh-token users
+      operationId: refresh-token
+      parameters:
+      - description: Token Data
+        in: body
+        name: TokenInput
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Tokens'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Tokens'
+      summary: refresh-token users
+      tags:
+      - auth
+  /auth/signUp:
+    post:
+      description: SignUp users
+      operationId: SignUp
+      parameters:
+      - description: User Data
+        in: body
+        name: UserInput
+        required: true
+        schema:
+          $ref: '#/definitions/domain.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.ResponseUser'
+      summary: SignUp users
+      tags:
+      - auth
+  /devops:
+    get:
+      description: Get all devops
+      operationId: FindAll
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/handler.ResponseDevops'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Get all devops
+      tags:
+      - devops
+  /devops/{id}:
+    delete:
+      parameters:
+      - description: ' ID'
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Devops is deleted successfully
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - devops
+    get:
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: ' ID'
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - devops
+  /devops/save:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Devops Data
+        in: body
+        name: devopsInput
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Devops'
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.ResponseDevops'
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - devops
+  /devops/update/{id}:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' ID'
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Devops Data
+        in: body
+        name: devopsInput
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Devops'
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.ResponseDevops'
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - devops
+  /rol:
+    get:
+      description: Get all rol
+      operationId: FindAllRol
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/handler.ResponseRol'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Get all rol
+      tags:
+      - rol
+  /users:
+    get:
+      description: Get all users
+      operationId: FindAllUsers
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/handler.ResponseUser'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: Get all users
+      tags:
+      - users
+swagger: "2.0"
