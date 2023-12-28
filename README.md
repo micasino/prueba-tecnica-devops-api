@@ -1,4 +1,5 @@
 # MiCasino Devops Challenge
+You can see the challenge requirements [here](docs/micasino-prueba-tecnica-devops.odt) .
 
 ## Create .env file
 Create an .env file with these paramenters
