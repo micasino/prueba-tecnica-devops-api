@@ -1,8 +1,7 @@
-# Mega inc Devops Challenge
-Mega inc Devops Challenge  #gin #gorm #wire #jwt #viper #cty #yaml
+# MiCasino Devops Challenge
 
-## Create file .env with paramaters
-Create file with parameters
+## Create .env file
+Create an .env file with these paramenters
 ```
 DB_HOST="localhost"
 DB_NAME="devops"
@@ -12,24 +11,26 @@ DB_PASSWORD="postgres"
 ```
 
 ## Build Api
-Build Api
+Build the api code by executing:
 ```shell
 go build -o ./build/bin -v ./cmd/api
 ```
 
 ## Run Api
-Run Api
+You can also run it by executing:
 ```shell
 go run ./cmd/api
 ```
 
-## accessing Swagger
-Use the below URL for accessing Swagger from your browser, change the URL path as per your host. (localhost:3000, www.midominio.com,etc)
+## Swagger docs
+You can access the Swagger documentation using your browser on the port 3000. For example:
 ```shell
 http://localhost:3000/api/v1/swagger/index.html
 ```
 
-## Create Users
+## Testing the api
+
+### Create Users
 ```shell
 curl -X 'POST' \
   'http://localhost:3000/api/v1/auth/signUp' \
@@ -45,7 +46,7 @@ curl -X 'POST' \
     "us_eliminado": false
 }'
 ```
-## Create Login
+### Create Login
 ```shell
 curl -X 'POST' \
   'http://localhost:3000/api/v1/auth/login' \
@@ -57,7 +58,7 @@ curl -X 'POST' \
 }'
 ```
 
-## Devops Save
+### Devops Save
 ```shell
 curl -X 'POST' \
   'http://localhost:3000/api/v1/devops/save' \
