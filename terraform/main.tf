@@ -1,42 +1,41 @@
-provider "google" {
-    project = "iacchalenge"
-    credentials = file("iacchallenge-credentials.json")
-    region = "us-central1"
-    zone = "us-central1-c"
+provider "google" {}
 
-}
-
-
-provider "helm" {
-  kubernetes {
-    config_path = "~/.kube/config"
-  }
-}
 
 terraform {
+  required_version = ">=0.51.1"
+
   required_providers {
- 
-    helm = {
-      source  = "hashicorp/helm"
-      version = "~> 2.0"
+
+    tfe = {
+      version = "~> 0.50.0"
+    }
+
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 3.74.0"
     }
     kubernetes = {
-      source = "hashicorp/kubernetes"
-      version = "~> 2.0"
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.0.3"
+      version = "2.24.0"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.1.0"
+    }
+
   }
-  required_version = ">= 1"
 }
-
-
 
 
 resource "google_compute_network" "iac_vpc" {
-  name = "iac-vpc"
+  name    = "iac-vpc"
+  project = "iacchalenge"
 }
 
 resource "google_compute_subnetwork" "gke_subnet" {
   name          = "gke-subnet"
+  project       = "iacchalenge"
   ip_cidr_range = "10.0.1.0/24"
   network       = google_compute_network.iac_vpc.name
   region        = "us-central1"
@@ -44,21 +43,23 @@ resource "google_compute_subnetwork" "gke_subnet" {
 
 resource "google_compute_subnetwork" "sql_subnet" {
   name          = "sql-subnet"
+  project       = "iacchalenge"
   ip_cidr_range = "10.0.2.0/24"
   network       = google_compute_network.iac_vpc.name
   region        = "us-central1"
 }
 
 resource "google_container_cluster" "instance_gke_cluster" {
-  name     = "iac-gke-cluster"
-  location = "us-central1"
-  network  = google_compute_network.iac_vpc.name
+  name       = "iac-gke-cluster"
+  project    = "iacchalenge"
+  location   = "us-central1"
+  network    = google_compute_network.iac_vpc.name
   subnetwork = google_compute_subnetwork.gke_subnet.self_link
-  
+
   initial_node_count = 1
-  
+
   node_config {
-    preemptible       = false
+    preemptible  = false
     machine_type = "e2-medium"
   }
 }
@@ -76,10 +77,11 @@ resource "null_resource" "configure_kubeconfig" {
 }
 
 resource "google_redis_instance" "iac_redis_instance" {
-  name     = "iac-redis-instance"
+  name           = "iac-redis-instance"
+  project        = "iacchalenge"
   memory_size_gb = 1
-  region   = "us-central1"
-  tier     = "BASIC"
+  region         = "us-central1"
+  tier           = "BASIC"
 
   authorized_network = "iac-vpc"
 }
@@ -99,15 +101,17 @@ resource "google_sql_database_instance" "iac_sql_instance" {
 ###### hasta aca todo OK ########
 
 
-# Retrieve an access token as the Terraform runner
-data "google_client_config" "provider" {}
-
-
 
 provider "kubernetes" {
-  host  = "https://${data.google_container_cluster.instance_gke_cluster.endpoint}"
-  token = data.google_client_config.provider.access_token
-  cluster_ca_certificate = base64decode(
-    data.google_container_cluster.instance_gke_cluster.master_auth[0].cluster_ca_certificate,
-  )
+  config_path = "~/.kube/config"
+  host = "https://35.184.112.207:443"
 }
+
+provider "helm" {
+  kubernetes {
+    config_path = "~/.kube/config"
+  }
+}
+#output "kubeconfig_path" {
+#  value = data.kubernetes_config_map.example.data["kubeconfig"]
+#}
