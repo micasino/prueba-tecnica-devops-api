@@ -2,7 +2,7 @@ provider "google" {}
 
 
 terraform {
-  required_version = ">=0.51.1"
+  required_version = ">=1.5"
 
   required_providers {
 
