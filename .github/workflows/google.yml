@@ -14,7 +14,7 @@ name: Gabriel Gomez Challenge DevOps API Build and Deploy to GKE
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "develop" ]
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
