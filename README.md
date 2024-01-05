@@ -73,3 +73,6 @@ curl -X 'POST' \
 }'
 
 ```
+### Updating Challenge
+1) Dockerfile DONE!
+2) Updating Pipeline Actions Now. First step push.yaml
