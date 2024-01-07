@@ -76,3 +76,8 @@ curl -X 'POST' \
 ### Updating Challenge
 1) Dockerfile DONE!
 2) Updating Pipeline Actions Now. First step push.yaml
+3) GithubPipeline Stage build DONE! (develop)
+Docker Image created (see Dockerfile)
+Docker Image pushed DockerHub Repository
+
+
