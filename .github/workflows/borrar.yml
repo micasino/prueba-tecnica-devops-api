@@ -1,18 +1,18 @@
-name: Build and Deploy to GKE
+name: Connect and Deploy to GKE
 
 on:
   push:
     branches:
       - develop
 
-env:
-  PROJECT_ID: iacchalenge
-  GKE_CLUSTER: iac-gke-cluster    # Add your cluster name here.
-  GKE_ZONE: us-central1   # Add your cluster zone here.
-  DEPLOYMENT_NAME: iac-app # Add your deployment name here.
+#env:
+#  PROJECT_ID: iacchalenge
+#  GKE_CLUSTER: iac-gke-cluster   
+#  GKE_ZONE: us-central1   
+#  DEPLOYMENT_NAME: iac-app 
 jobs:
   setup-build-publish-deploy:
-    name: Setup, Build, Publish, and Deploy
+    name: Setup, Connect, and Deploy
     runs-on: ubuntu-latest
     environment: production
 
@@ -29,6 +29,6 @@ jobs:
       uses: 'google-github-actions/get-gke-credentials@v2'
       with:
         cluster_name: 'iac-gke-cluster'
-        location: 'us-central1'
+        location: 'us-central1-a'
     - id: 'get-pods'
       run: 'kubectl get pods'
