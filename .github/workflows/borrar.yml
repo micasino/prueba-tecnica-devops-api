@@ -45,7 +45,7 @@ jobs:
           GOOGLE_PROJECT: ${{ secrets.GKE_PROJECT }}
           GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
         run: |
-          gcloud container clusters get-credentials $GKE_CLUSTER --region us-central1
+          gcloud container clusters get-credentials iac-gke-cluster --region us-central1
           sed -i "s/DOCKER_TAG/${{ env.VERSION_TAG }}"/g" ../iac-app-deployment.yml
           cat ../iac-app-deployment.yml
           kubectl get nodes
