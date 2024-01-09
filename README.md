@@ -83,7 +83,7 @@ Docker Image pushed DockerHub Repository
 5) Tag Version Git Repository Code added.  
 To push a new tag to this public repository:  
 docker push elarcangelsax/gabriel.gomez.mega.inc.devops:tagname  
-6) GCP Infrastructure Deployed.  
+6) GO App Kubernetes Infrastructure Deployed (kubectl apply -f ymls).  
    IP Public for testing online GO application: 35.226.83.186  
    Create User, Create Login, Devops Save
 7) Next step: deploying App to GKE Kubernetes via Github Pipeline (CD GitHub pipeline)
