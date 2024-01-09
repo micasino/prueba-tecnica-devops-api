@@ -42,7 +42,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
         with:
           project_id: ${{ secrets.GKE_PROJECT }}
-          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+#          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           install_components: 'gke-cloud-auth-plugin'
           export_default_credentials: true
       - name: deploying to GKE
