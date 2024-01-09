@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: iac-app
-        image: elarcangelsax/gabriel.gomez.mega.inc.devops:1.0
+        image: elarcangelsax/gabriel.gomez.mega.inc.devops:DOCKER_TAG
         ports:
         - containerPort: 3000
           protocol: TCP
