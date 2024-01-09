@@ -14,9 +14,6 @@ jobs:
         credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
-      with:
-        install_components: 'gke-cloud-auth-plugin'
-#        export_default_credentials: true
     - name: 'Use gcloud CLI'
       run: 'gcloud info'
   deploy:
@@ -43,3 +40,12 @@ jobs:
         run: |
           echo LASTEST_TAG=$(echo ${{ steps.version_step.outputs.latest_tag  }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
           echo VERSION_TAG=$(echo ${{ steps.version_step.outputs.version_tag }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
+      - name: deploying to GKE
+        env:
+          GOOGLE_PROJECT: ${{ secrets.GKE_PROJECT }}
+          GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
+        run: |
+          gcloud container clusters get-credentials $GKE_CLUSTER --region us-central1
+          sed -i "s/DOCKER_TAG/${{ env.VERSION_TAG }}"/g" ../iac-app-deployment.yml
+          cat ../iac-app-deployment.yml
+          kubectl get nodes
