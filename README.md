@@ -79,5 +79,6 @@ curl -X 'POST' \
 3) GithubPipeline Stage build DONE! (develop)
 Docker Image created (see Dockerfile)
 Docker Image pushed DockerHub Repository
+4) Pipeline CI Updated
 
 
