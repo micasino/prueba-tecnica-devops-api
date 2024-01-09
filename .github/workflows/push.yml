@@ -1,4 +1,4 @@
-name: golang-pipeline
+name: golang-pipeline-deploy-GKE
 on: 
    push:
       tags: 
