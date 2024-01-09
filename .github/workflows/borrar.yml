@@ -1,55 +1,42 @@
-name: deploy-app-gke
-on: 
+name: Build and Deploy to GKE
+
+on:
   push:
     branches:
       - develop
+
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_CLUSTER: iac-gke-cluster    # Add your cluster name here.
+  GKE_ZONE: us-central1   # Add your cluster zone here.
+  DEPLOYMENT_NAME: iac-app-test # Add your deployment name here.
+#  IMAGE: static-site
+
 jobs:
-  job_id:
-    runs-on: 
-      ubuntu-latest
-    permissions:
-      contents: 'read'
-      id-token: 'write'
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
     steps:
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v2'
-        with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
-          service_account: 'challenge-sa@iacchalenge.iam.gserviceaccount.com'
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v2'
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
-##  deploy:
-##    runs-on: ubuntu-latest
-#    if: startsWith(github.ref, 'refs/tags/v')
-##    steps:
-      - uses: actions/checkout@v4
-      - name: Extract Version
-        id: version_step
-        run: |
-          echo "##[set-output name=latest_tag;]$GITHUB_REPOSITORY:latest"
-          echo "##[set-output name=version_tag;]$GITHUB_REPOSITORY:${GITHUB_REF#$"refs/tags/v"}"
-      - name: Print Version
-        run: |
-          echo ${{steps.version_step.outputs.latest_tag}}
-          echo ${{steps.version_step.outputs.version_tag}}
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: PrepareReg Names
-        id: read-docker-image-identifiers
-        run: |
-          echo LASTEST_TAG=$(echo ${{ steps.version_step.outputs.latest_tag  }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
-          echo VERSION_TAG=$(echo ${{ steps.version_step.outputs.version_tag }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
-      - name: deploying to GKE
-        env:
-          GOOGLE_PROJECT: ${{ secrets.GKE_PROJECT }}
-          GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
-        run: |
-          gcloud container clusters get-credentials iac-gke-cluster --region us-central1
-          sed -i "s/DOCKER_TAG/${{ env.VERSION_TAG }}"/g" ../iac-app-deployment.yml
-          cat ../iac-app-deployment.yml
-          kubectl get nodes
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    # Setup gcloud CLI
+    - uses: google-github-actions/setup-gcloud@1bee7de035d65ec5da40a31f8589e240eba8fde5
+      with:
+        service_account_key: ${{ secrets.GKE_SA_KEY }}
+        project_id: ${{ secrets.GKE_PROJECT }}
+
+    # Get the GKE credentials so we can deploy to the cluster
+    - uses: google-github-actions/get-gke-credentials@db150f2cc60d1716e61922b832eae71d2a45938f
+      with:
+        cluster_name: ${{ env.GKE_CLUSTER }}
+        location: ${{ env.GKE_ZONE }}
+        credentials: ${{ secrets.GKE_SA_KEY }}
+
+    # Deploy the Docker image to the GKE cluster
+    - name: Deploy
+      run: |-
+        kubectl get services -o wide
+        kubectl get nodes -o wide
