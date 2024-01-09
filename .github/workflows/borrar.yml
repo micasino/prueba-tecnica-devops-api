@@ -1,19 +1,15 @@
 name: Connect and Deploy to GKE
 
 on:
-  push:
-    branches:
-      - develop
-
-#env:
-#  PROJECT_ID: iacchalenge
-#  GKE_CLUSTER: iac-gke-cluster   
-#  GKE_ZONE: us-central1   
-#  DEPLOYMENT_NAME: iac-app 
+  workflow_run:
+    workflows: ["golang-pipeline-deploy-GKE"]
+    types:
+      - completed
 jobs:
   setup-build-publish-deploy:
     name: Setup, Connect, and Deploy
     runs-on: ubuntu-latest
+    needs: golang-pipeline-deploy-GKE
     environment: production
 
     steps:
