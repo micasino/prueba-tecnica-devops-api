@@ -5,11 +5,11 @@ on:
     branches:
       - develop
 
-#env:
-#  PROJECT_ID: iacchalenge
-#  GKE_CLUSTER: iac-gke-cluster   
-#  GKE_ZONE: us-central1   
-#  DEPLOYMENT_NAME: iac-app 
+env:
+  PROJECT_ID: iacchalenge
+  GKE_CLUSTER: iac-gke-cluster   
+  GKE_ZONE: us-central1   
+  DEPLOYMENT_NAME: iac-app 
 jobs:
   setup-build-publish-deploy:
     name: Setup, Connect, and Deploy
