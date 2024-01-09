@@ -11,4 +11,8 @@ FROM debian:stable-slim as final
 COPY --from=builder /app/build /app/build
 COPY .env /app/build/
 WORKDIR /app/build/
+RUN apt-get update && \
+    apt-get install -y wget
+EXPOSE 3000
+
 CMD [ "./bin" ]
