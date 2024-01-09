@@ -74,11 +74,15 @@ curl -X 'POST' \
 
 ```
 ### Updating Challenge
-1) Dockerfile DONE!
-2) Updating Pipeline Actions Now. First step push.yaml
-3) GithubPipeline Stage build DONE! (develop)
-Docker Image created (see Dockerfile)
-Docker Image pushed DockerHub Repository
-4) Pipeline CI Updated
+1) Dockerfile DONE!  
+2) Updating Pipeline Actions Now. First step push.yaml  
+3) GithubPipeline Stage build DONE! (develop)  
+Docker Image created (see Dockerfile)  
+Docker Image pushed DockerHub Repository  
+4) Pipeline CI Updated.  
+5) Tag Version Git Repository Code added.  
+To push a new tag to this public repository:  
+docker push elarcangelsax/gabriel.gomez.mega.inc.devops:tagname  
+
 
 
