@@ -80,8 +80,10 @@ jobs:
         VERSION_TAG: ${{ env.VERSION_TAG }}
       run: |
         kubectl get pods
+        ls -lat 
+        ls -lat ./manifest
         VERSION_TAG=$(echo ${{steps.version_step.outputs.version_tag}} | tr '[:upper:]' '[:lower:]')
         echo ".......[$VERSION_TAG]......."
-        sed -i.bak "s|DOCKER_TAG|${VERSION_TAG}|g" iac-app-deployment.yml && \
-        kubectl apply -f iac-app-deployment.yml
-#        cat iac-app-deployment.yml
+        sed -i.bak "s|DOCKER_TAG|${VERSION_TAG}|g" ./manifest/replicaset.yam && \
+        kubectl apply -f ./manifest/replicaset.yaml
+#       
