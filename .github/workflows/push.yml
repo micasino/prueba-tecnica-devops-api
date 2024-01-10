@@ -61,12 +61,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Extract Version
-      id: version_step
+      id: version_step       
       run: |
         echo "##[set-output name=latest_tag;]$GITHUB_REPOSITORY:latest"
         echo "##[set-output name=version_tag;]$GITHUB_REPOSITORY:${GITHUB_REF#$"refs/tags/v"}"      
     - id: 'auth'
-      uses: 'google-github-actions/auth@v2'
+      uses: 'google-github-actions/auth@v2'  
       with:
         credentials_json: '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}'
     - id: 'get-credentials'
@@ -75,7 +75,10 @@ jobs:
        cluster_name: 'iac-gke-cluster'
        location: 'us-central1'
     - id: 'get-pods'
+      shell: bash
       run: |
         kubectl get pods
-        sed -i.bak "s|DOCKER_TAG|${{ env.VERSION_TAG }}|g" iac-app-deployment.yml && \
+        sed -i.bak "s|DOCKER_TAG|${VERSION_TAG}|g" iac-app-deployment.yml && \
         cat iac-app-deployment.yml
+      env: 
+        VERSION_TAG: ${{ env.VERSION_TAG }}
