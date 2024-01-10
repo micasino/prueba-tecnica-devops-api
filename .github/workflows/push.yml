@@ -43,11 +43,11 @@ jobs:
           echo VERSION_TAG=$(echo ${{ steps.version_step.outputs.version_tag }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
       - name: Check if Docker image exists
         run: |
-          if docker manifest inspect ${{env.LASTEST_TAG}} &> /dev/null; then
-            echo "Image ${{env.LASTEST_TAG}} exists."
+          if docker manifest inspect ${{env.VERSION_TAG}} &> /dev/null; then
+            echo "Image ${{env.VERSION_TAG}} exists."
+            exit 1
           else
-            echo "Image ${{env.LASTEST_TAG}} does not exist."
-            exit 1  # Fail the workflow if the image doesn't exist
+            echo "Image ${{env.VERSION_TAG}} does not exist."
           fi
       - name: Build and push
         id: docker_build
