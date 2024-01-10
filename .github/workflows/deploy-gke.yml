@@ -1,70 +1,37 @@
-name: deploy-app-gke
-on: 
-  push:
-    branches:
-      - develop
+name: Connect and Deploy to GKE
+
+on:
+  workflow_run:
+    workflows: ["golang-pipeline-deploy-GKE"]
+    types:
+      - completed
 jobs:
-  deploy:
+  setup-build-publish-deploy:
+    name: Setup, Connect, and Deploy
     runs-on: ubuntu-latest
-#    if: startsWith(github.ref, 'refs/tags/v')
+    needs: golang-pipeline-deploy-GKE
+    environment: production
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Extract Version
-        id: version_step
-        run: |
-          echo "##[set-output name=latest_tag;]$GITHUB_REPOSITORY:latest"
-          echo "##[set-output name=version_tag;]$GITHUB_REPOSITORY:${GITHUB_REF#$"refs/tags/v"}"
-      - name: Print Version
-        run: |
-          echo ${{steps.version_step.outputs.latest_tag}}
-          echo ${{steps.version_step.outputs.version_tag}}
-#      - name: Set up QEMU
-#        uses: docker/setup-qemu-action@v3
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Extract Version
+      id: version_step
+      run: |
+        echo "##[set-output name=latest_tag;]$GITHUB_REPOSITORY:latest"
+        echo "##[set-output name=version_tag;]$GITHUB_REPOSITORY:${GITHUB_REF#$"refs/tags/v"}"      
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        credentials_json: '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}'
 
-#      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v3
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: PrepareReg Names
-        id: read-docker-image-identifiers
-        run: |
-          echo LASTEST_TAG=$(echo ${{ steps.version_step.outputs.latest_tag  }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
-          echo VERSION_TAG=$(echo ${{ steps.version_step.outputs.version_tag }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v2'
-        with:
-          credentials_json: '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}'
-      - name: installing gloud cli 
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-#          project_id: ${{ secrets.GKE_PROJECT }}
-#          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-          install_components: 'gke-cloud-auth-plugin'
-          export_default_credentials: true
-      - name: deploying to GKE
-        env:
-          GOOGLE_PROJECT: ${{ secrets.GKE_PROJECT }}
-          GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
-        run: |
-          gcloud container clusters get-credentials $GKE_CLUSTER --region us-central1
-          sed -i "s/DOCKER_TAG/${{ env.VERSION_TAG }}"/g" ../iac-app-deployment.yml
-          cat ../iac-app-deployment.yml
-          kubectl get nodes
-
-
-
-
-#      - name: Build and push
-#        id: docker_build
-#        uses: docker/build-push-action@v5
-#        with:
-#          push: true
-#          tags: |
-#            ${{env.LASTEST_TAG}}
-#            ${{env.VERSION_TAG}}
-#          build-args: |
-#            ${{steps.version_step.outputs.version}}
+    - id: 'get-credentials'
+      uses: 'google-github-actions/get-gke-credentials@v2'
+      with:
+        cluster_name: 'iac-gke-cluster'
+        location: 'us-central1'
+    - id: 'get-pods'
+      run: |
+        kubectl get pods
+        cat ../iac-app-deployment.yml | sed "s/{{DOCKER_TAG}}/${{ env.VERSION_TAG }}" | kubectl apply -f -
+        kubectl get nodes

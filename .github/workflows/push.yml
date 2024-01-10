@@ -1,10 +1,16 @@
 name: golang-pipeline-deploy-GKE
 on: 
    push:
-      tags: 
+    branches:
+     - 'develop'
+    tags: 
         - 'v*'
+   pull_request:
+    branches:
+     - 'main'
+     
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
