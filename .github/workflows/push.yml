@@ -50,6 +50,8 @@ jobs:
             echo "Image ${{env.VERSION_TAG}} does not exist."
           fi
       - name: Build and push
+        if:   github.event_name == 'push' && github.ref == 'refs/heads/develop'
+
         id: docker_build
         uses: docker/build-push-action@v5
         with:
@@ -106,7 +108,6 @@ jobs:
 
       - name: Test Script App
         run: |
-          
           response_code=$(./test-app.sh | jq -r '.code')
 
           if [ "$response_code" -eq 200 ]; then
