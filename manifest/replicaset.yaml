@@ -1,5 +1,28 @@
 ---
 apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: iac-challenge-app
+  name: iac-challenge-app
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      run: iac-challenge-app
+  template:
+    metadata:
+      labels:
+        run: iac-challenge-app
+    spec:
+      containers:
+      - name: iac-app
+        image: DOCKER_TAG
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+---
+apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
   name: iac-app-replicaset
