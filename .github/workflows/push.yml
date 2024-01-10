@@ -76,9 +76,10 @@ jobs:
        location: 'us-central1'
     - id: 'get-pods'
       shell: bash
+      env: 
+        VERSION_TAG: ${{ env.VERSION_TAG }}
       run: |
         kubectl get pods
         sed -i.bak "s|DOCKER_TAG|${VERSION_TAG}|g" iac-app-deployment.yml && \
         cat iac-app-deployment.yml
-      env: 
-        VERSION_TAG: ${{ env.VERSION_TAG }}
+      
