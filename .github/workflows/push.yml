@@ -78,5 +78,6 @@ jobs:
     - id: 'get-pods'
       run: |
         kubectl get pods
-        cat ../iac-app-deployment.yml | sed "s/{{DOCKER_TAG}}/${{ env.VERSION_TAG }}" | kubectl apply -f -
+        cd ..
+        cat iac-app-deployment.yml | sed "s/\{\{DOCKER_TAG\}\}/${{ env.VERSION_TAG }}" | kubectl apply -f -
         kubectl get nodes
