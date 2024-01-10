@@ -26,7 +26,7 @@ spec:
                 - "3"
       containers:
       - name: iac-app
-        image: elarcangelsax/gabriel.gomez.mega.inc.devops:2.3
+        image: DOCKER_TAG
         ports:
         - containerPort: 3000
 ---
