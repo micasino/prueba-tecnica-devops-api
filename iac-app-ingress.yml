@@ -1,0 +1,11 @@
+# iac-app-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: iac-app-ingress
+spec:
+  defaultBackend:
+    service:
+      name: iac-challenge-svc
+      port: 
+        number: 80

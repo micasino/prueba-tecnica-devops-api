@@ -76,3 +76,27 @@ curl -X 'POST' \
 ### Updating Challenge
 1) Dockerfile DONE!
 2) Updating Pipeline Actions Now. First step push.yaml
+=======
+1) Dockerfile DONE!  
+2) Updating Pipeline Actions Now. First step push.yaml  
+3) GithubPipeline Stage build DONE! (develop)  
+Docker Image created (see Dockerfile)  
+Docker Image pushed DockerHub Repository  
+4) Pipeline CI Updated.  
+5) Tag Version Git Repository Code added.  
+To push a new tag to this public repository:  
+docker push elarcangelsax/gabriel.gomez.mega.inc.devops:tagname  
+6) GO App Kubernetes Infrastructure Deployed (kubectl apply -f ymls).  
+   IP Public for testing online GO application (endpoint): 35.226.83.186  
+   Create User, Create Login, Devops Save
+7) Next step: deploying App to GKE Kubernetes via Github Pipeline (CD GitHub pipeline)  
+8) Challenge Finished.
+
+Every Change, you need first using "tag". E.g.  (see github pipeline conditions)
+
+git branch develop
+...[all changes.....]
+git add .
+git commit -m "...changes...."
+git tag -a v3.45 -m "Initial Version IAC Challenge....adding final app test.....Step 7"
+git push origin v3.45
