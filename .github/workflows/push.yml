@@ -10,7 +10,7 @@ on:
     branches:
      - 'main'   
 jobs:
-  deploy:
+  deploy:    
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
@@ -76,8 +76,6 @@ jobs:
        location: 'us-central1'
     - id: 'get-pods'
       run: |
-        kubectl get pods
-        ls -lta
-        pwd 
-        cat iac-app-deployment.yml | sed "s/{{DOCKER_TAG}}/${{ env.VERSION_TAG }}/g" | kubectl apply -f -
-        kubectl get nodes
+        kubectl get pods \
+        sed -i.bak "s|DOCKER_TAG|${{ env.VERSION_TAG }}|g" iac-app-deployment.yml && \
+        cat iac-app-deployment.yml
