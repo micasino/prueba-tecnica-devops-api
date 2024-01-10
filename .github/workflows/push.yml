@@ -10,7 +10,7 @@ on:
     branches:
      - 'main'   
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
