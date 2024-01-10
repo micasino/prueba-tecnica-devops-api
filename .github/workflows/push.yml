@@ -101,9 +101,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run Test Script
-        run: bash a.sh
+        run: bash test-app.sh
         id: test_script
-        
+
       - name: Test Script App
         run: |
           response_code=$(echo "${{ steps.test_script.outputs.stdout }}" | jq -r '.code')
