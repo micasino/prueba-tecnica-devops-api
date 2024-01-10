@@ -106,7 +106,8 @@ jobs:
 
       - name: Test Script App
         run: |
-          response_code=$(echo "${{ steps.test_script.outputs.stdout }}" | jq -r '.code')
+          
+          response_code=$(./test-app.sh | jq -r '.code')
 
           if [ "$response_code" -eq 200 ]; then
             echo "Test passed. Status code: $response_code"
