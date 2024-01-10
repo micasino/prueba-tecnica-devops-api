@@ -84,6 +84,6 @@ jobs:
         ls -lat ./manifest
         VERSION_TAG=$(echo ${{steps.version_step.outputs.version_tag}} | tr '[:upper:]' '[:lower:]')
         echo ".......[$VERSION_TAG]......."
-        sed -i.bak "s|DOCKER_TAG|${VERSION_TAG}|g" ./manifest/replicaset.yam && \
+        sed -i.bak "s|DOCKER_TAG|${VERSION_TAG}|g" ./manifest/replicaset.yaml && \
         kubectl apply -f ./manifest/replicaset.yaml
 #       
