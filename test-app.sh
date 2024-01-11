@@ -1,0 +1,1 @@
+curl -X 'POST' 'http://35.226.83.186:3000/api/v1/auth/signUp' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "us_usuario": "pdominguez", "us_nombre": "pedro", "us_apellido": "dominguez", "us_correo": "correo@email.com", "us_clave": "clave123", "us_esactivo": true, "us_eliminado": false }'

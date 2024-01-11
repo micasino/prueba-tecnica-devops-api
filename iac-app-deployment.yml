@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: iac-challenge-app
+  name: iac-challenge-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: iac-challenge-app
+  template:
+    metadata:
+      labels:
+        run: iac-challenge-app
+    spec:
+      containers:
+      - name: iac-app
+        image: elarcangelsax/gabriel.gomez.mega.inc.devops:3.22 
+        ports:
+        - containerPort: 3000
+          protocol: TCP
