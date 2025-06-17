@@ -1,75 +1,34 @@
-# MiCasino Devops Challenge
-You can see the challenge requirements [here](docs/micasino-prueba-tecnica-devops.odt?raw=1) .
+# DevOps Technical Test
 
-## Create .env file
-Create an .env file with these paramenters
-```
-DB_HOST="localhost"
-DB_NAME="devops"
-DB_USER="postgres"
-DB_PORT="5432"
-DB_PASSWORD="postgres"
-```
+Welcome! This repository contains a technical test for DevOps candidates. The test is divided into two main parts:
 
-## Build Api
-Build the api code by executing:
-```shell
-go build -o ./build/bin -v ./cmd/api
-```
+- **Infrastructure as Code (IaC)**: See `IAC_TEST.md` for instructions.
+- **Build & Push**: See `BUILD_PUSH_TEST.md` for instructions.
 
-## Run Api
-You can also run it by executing:
-```shell
-go run ./cmd/api
-```
+## How to Complete the Test
 
-## Swagger docs
-You can access the Swagger documentation using your browser on the port 3000. For example:
-```shell
-http://localhost:3000/api/v1/swagger/index.html
-```
+1. **Fork the Repository**
+   - Fork this repository into your own GitHub account.
 
-## Testing the api
+2. **Create a Feature Branch**
+   - Create a new branch from `main` in your fork to work on your solution.
+   - Example branch name: `feature/<name>-<surname>-devops-test-solution`
 
-### Create Users
-```shell
-curl -X 'POST' \
-  'http://localhost:3000/api/v1/auth/signUp' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "us_usuario": "pdominguez",
-    "us_nombre": "pedro",
-    "us_apellido": "dominguez",
-    "us_correo": "correo@email.com",
-    "us_clave": "clave123",
-    "us_esactivo": true,
-    "us_eliminado": false
-}'
-```
-### Create Login
-```shell
-curl -X 'POST' \
-  'http://localhost:3000/api/v1/auth/login' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "password": "clave123",
-  "username": "pdominguez"
-}'
-```
+3. **Organize Your Work by Commit**
+   - Each major task or test part (e.g., IaC, Build & Push) should be implemented in a separate commit.
+   - Each commit should be self-explanatory and focused on a single logical change.
+   - Use clear and descriptive commit messages following the Conventional Commits specification.
 
-### Devops Save
-```shell
-curl -X 'POST' \
-  'http://localhost:3000/api/v1/devops/save' \
-  -H 'accept: application/json' \
-  -H 'Authorization: Bearer <access token obtained on login>' \
-  -H 'Content-Type: application/json' \
-  -d '{ "message": "This is a test",
-    "to": "Juan Perez",
-    "from": "Rita Asturia",
-    "timeToLifeSec": 45
-}'
+4. **Push and Submit**
+   - Push your branch to your forked repository.
+   - Submit your solution as a pull request to the original repository, or share your fork and branch as instructed by your contact.
 
-```
+## Test Parts
+
+- **IaC Test**: See `IAC_TEST.md` for detailed instructions and deliverables.
+- **Build & Push Test**: See `BUILD_PUSH_TEST.md` for detailed instructions and deliverables.
+
+## Questions?
+If you have any questions or need clarification, please reach out to your contact person for this test.
+
+---
